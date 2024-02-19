@@ -7,7 +7,7 @@ function scrollToSection() {
 // Count seat numbers
 const allBtn = document.getElementsByClassName('add-btn');
 let count = 0;
-
+let finaltotal=0;
 for (const btn of allBtn) {
     btn.addEventListener('click', function (e) {
         if (count < 4) {
@@ -42,7 +42,9 @@ for (const btn of allBtn) {
                 const totalCost = parseFloat(totalCostElement.innerText);
                 const seatValue = parseFloat(seatFare.innerText);
                 const total = totalCost + seatValue;
-
+                finaltotal=total;
+                
+                grandTotal(grandTotalValue);
                 setInnerText('total-cost', total);
                 count++;
                 setInnerText('seat-count', count);
@@ -82,8 +84,8 @@ for (let seat of leftSeats) {
 // Coupon Input
 const couponButton = document.getElementById('apply-coupon');
 couponButton.addEventListener('click', function () {
-    applyCoupon();
     grandTotal();
+    applyCoupon();
 });
 
 function applyCoupon() {
@@ -107,6 +109,7 @@ function grandTotal() {
     const couponInput = document.getElementById('coupon-text').value.toUpperCase();
 
     let total = parseFloat(totalCostElement.innerText);
+    
 
     if (couponInput === 'NEW15') {
         total -= total * 0.15;
@@ -142,6 +145,7 @@ function enterSite() {
 function again(){
     setInnerText('seat-count', 0);
     setInnerText('total-cost', 0);
+    setInnerText('grand-cost', 0);
     setInnerText('seat-left', 40);
     const seatButtons = document.getElementsByClassName('add-btn');
     for (const btn of seatButtons) {
