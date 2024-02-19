@@ -7,7 +7,9 @@ function scrollToSection() {
 // Count seat numbers
 const allBtn = document.getElementsByClassName('add-btn');
 let count = 0;
-let finaltotal=0;
+let finaltotal = 0;
+let grandTotalValue = 0; // Added a variable to store the grand total
+
 for (const btn of allBtn) {
     btn.addEventListener('click', function (e) {
         if (count < 4) {
@@ -42,9 +44,9 @@ for (const btn of allBtn) {
                 const totalCost = parseFloat(totalCostElement.innerText);
                 const seatValue = parseFloat(seatFare.innerText);
                 const total = totalCost + seatValue;
-                finaltotal=total;
-                
-                grandTotal(grandTotalValue);
+                finaltotal = total;
+
+                grandTotal(); // Call grandTotal without arguments
                 setInnerText('total-cost', total);
                 count++;
                 setInnerText('seat-count', count);
@@ -76,11 +78,12 @@ for (let seat of leftSeats) {
         }
         setInnerText('seat-left', seats);
 
-        //Disable
+        // Disable
         const applyCouponButton = document.getElementById('apply-coupon');
         applyCouponButton.disabled = count < 4;
     });
 }
+
 // Coupon Input
 const couponButton = document.getElementById('apply-coupon');
 couponButton.addEventListener('click', function () {
@@ -102,23 +105,24 @@ function applyCoupon() {
         alert('Invalid Coupon');
     }
 }
+
 // Grand Total
 function grandTotal() {
     const totalCostElement = document.getElementById('total-cost');
-    const grandTotalValue = document.getElementById('grand-cost');
+    grandTotalValue = parseFloat(totalCostElement.innerText); // Update grandTotalValue
+
     const couponInput = document.getElementById('coupon-text').value.toUpperCase();
 
-    let total = parseFloat(totalCostElement.innerText);
-    
-
     if (couponInput === 'NEW15') {
-        total -= total * 0.15;
+        grandTotalValue -= grandTotalValue * 0.15;
     } else if (couponInput === 'COUPLE20') {
-        total -= total * 0.20;
+        grandTotalValue -= grandTotalValue * 0.20;
     } else {
-        total = total;
+        grandTotalValue = finaltotal;
     }
-    grandTotalValue.innerText = total.toFixed(2);
+
+    const grandTotalElement = document.getElementById('grand-cost');
+    grandTotalElement.innerText = grandTotalValue.toFixed(2);
 }
 
 // Hide element
@@ -141,11 +145,10 @@ function enterSite() {
     showElementbyId('successful-section');
 }
 
-//Again start
-function again(){
+// Again start
+function again() {
     setInnerText('seat-count', 0);
     setInnerText('total-cost', 0);
-    setInnerText('grand-cost', 0);
     setInnerText('seat-left', 40);
     const seatButtons = document.getElementsByClassName('add-btn');
     for (const btn of seatButtons) {
